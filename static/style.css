@@ -1,0 +1,16 @@
+body {
+    background-color: #000000;
+}
+
+#home-title {
+    color: white;
+    text-align: center;
+    margin-top: 50px;
+    
+}
+
+#login-title {
+    color: white;
+    text-align: center;
+    margin-top: 50px;
+}
