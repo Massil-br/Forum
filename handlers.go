@@ -31,3 +31,11 @@ func Register(w http.ResponseWriter, r *http.Request) {
 func Categories(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "categories")
 }
+
+func CreateCategory(w http.ResponseWriter, r *http.Request){
+	renderTemplate(w, "create-category")
+}
+
+func CreatePost(w http.ResponseWriter, r *http.Request){
+	renderTemplate(w, "create-post")
+}
