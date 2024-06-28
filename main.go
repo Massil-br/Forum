@@ -14,6 +14,9 @@ func main() {
 
 	http.HandleFunc("/", Home)
 	http.HandleFunc("/login" , Login)
+	http.HandleFunc("/register", Register)
+	http.HandleFunc("/categories", Categories)
+
 	fmt.Println("server started on port" + port)
 	fmt.Println("http://localhost" + port)
 	http.ListenAndServe(port, nil)

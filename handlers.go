@@ -24,3 +24,10 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w , "login")
 }
 
+func Register(w http.ResponseWriter, r *http.Request) {
+	renderTemplate(w, "register")
+}
+
+func Categories(w http.ResponseWriter, r *http.Request) {
+	renderTemplate(w, "categories")
+}
