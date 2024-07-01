@@ -41,6 +41,9 @@ func Register(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("error while hashing confirm_password")
 		}
 
+		fmt.Println(hashedPassword)
+		fmt.Println(hashedConfirmPassword)
+
 		password = ""
 		confirmPassword=""
 
