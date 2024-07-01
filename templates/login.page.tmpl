@@ -7,7 +7,22 @@
     <title>Login Page</title>
 </head>
 <body>
-    <h1 class="pageTitle">Login Page</h1>
-    </form>
+    <header>
+        <h1 class="headerTitle"> Login Page</h1>
+    </header>
+    <main>
+        <form action="/login" method="post">
+            <div>
+                <label for="loginUsername">Nom d'utilisateur ou adresse Email:</label>
+                <input type="text" id="loginUsername" name="username" required>
+                <label for="loginPassword">Mot de passe:</label>
+                <input type="password" id="loginPassword" name="password" required>
+                <button id="loginButton" type="submit">Se connecter</button>
+            </div>
+        </form>
+    </main>
+    <footer>
+        <p class="footerText">© 2023 Notre Site. Tous droits réservés.</p>
+    </footer>
 </body>
 </html>

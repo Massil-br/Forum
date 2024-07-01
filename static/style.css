@@ -1,0 +1,88 @@
+body {
+    background-color: #000000;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Assure que le footer est en bas */
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+header, footer {
+    width: 100%;
+    background-color: #222;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.headerTitle {
+    margin: 0;
+}
+
+.pageTitle {
+    color: rgb(255, 255, 255);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding-top: 50px;
+    flex-grow: 1; /* Permet à main de prendre l'espace restant */
+}
+
+form {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%; /* Ajuster la largeur du formulaire */
+    max-width: 400px; /* Limiter la largeur maximale */
+    margin: 0 auto; /* Centrer le formulaire horizontalement */
+}
+
+form div {
+    width: 100%; /* Assurer que les éléments prennent toute la largeur du formulaire */
+    margin-bottom: 15px;
+}
+
+label {
+    color: white;
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-sizing: border-box; /* Inclure le padding et la bordure dans la largeur totale */
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #777;
+}
+
+.footerText {
+    margin: 0;
+}
