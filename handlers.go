@@ -36,20 +36,13 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Println("error while hashing password")
 		}
-		hashedConfirmPassword , err := src.HashPassword(confirmPassword)
-		if err != nil {
-			fmt.Println("error while hashing confirm_password")
-		}
+		
 
 		fmt.Println(hashedPassword)
-		fmt.Println(hashedConfirmPassword)
 
-		password = ""
-		confirmPassword=""
+		match := src.CheckPasswordHash(confirmPassword, hashedPassword)
 
-		checkPassword := src.CheckPasswordHash(hashedPassword, hashedConfirmPassword)
-
-		if checkPassword{
+		if match{
 			src.InsertUser(username, email, password)
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
