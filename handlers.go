@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 
@@ -29,10 +30,30 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		username := r.FormValue("username")
 		email := r.FormValue("email")
 		password := r.FormValue("password")
+		confirmPassword := r.FormValue("confirm_password")
 
-		src.InsertUser(username, email, password)
+		hashedPassword, err := src.HashPassword(password)
+		if err != nil {
+			fmt.Println("error while hashing password")
+		}
+		hashedConfirmPassword , err := src.HashPassword(confirmPassword)
+		if err != nil {
+			fmt.Println("error while hashing confirm_password")
+		}
+
+		password = ""
+		confirmPassword=""
+
+		checkPassword := src.CheckPasswordHash(hashedPassword, hashedConfirmPassword)
+
+		if checkPassword{
+			src.InsertUser(username, email, password)
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
+		} else {
+			fmt.Println("password and confirmpassword are not the same")
+		}
+		
 	}
 	renderTemplate(w, "register")
 }
