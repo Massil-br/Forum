@@ -11,9 +11,9 @@ import (
 var db *sql.DB
 
 type User struct {
-	IdUser int
+	IdUser   int
 	username string
-	email string
+	email    string
 	password string
 }
 
@@ -64,13 +64,13 @@ func ShowDatabase() {
 	}
 }
 
-func  CheckIfUserExist(username string , email string) (bool, int){
+func CheckIfUserExist(username string, email string) (bool, int) {
 	boolean := false
 	var userId int
-	
+
 	rows, _ := db.Query("SELECT idUser, username, email, password FROM users")
 	thisUser := User{}
-	for rows.Next(){
+	for rows.Next() {
 		rows.Scan(&thisUser.IdUser, &thisUser.username, &thisUser.email, &thisUser.password)
 		if thisUser.username == username || thisUser.email == email {
 			boolean = true
@@ -80,12 +80,11 @@ func  CheckIfUserExist(username string , email string) (bool, int){
 	return boolean, userId
 }
 
-
 func GetUserByID(ID int) User {
 	rows, _ := db.Query("SELECT idUser, username, email, password FROM users")
 	userToReturn := User{}
 	user := User{}
-	for rows.Next(){
+	for rows.Next() {
 		rows.Scan(&user.IdUser, &user.username, &user.email, &user.password)
 		if user.IdUser == ID {
 			userToReturn = user
@@ -94,7 +93,6 @@ func GetUserByID(ID int) User {
 	return userToReturn
 }
 
-func (user *User) GetUsername() string{
+func (user *User) GetUsername() string {
 	return user.username
 }
-
