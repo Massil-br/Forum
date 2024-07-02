@@ -64,18 +64,37 @@ func ShowDatabase() {
 	}
 }
 
-func  CheckIfUserExist(username string , email string) bool{
+func  CheckIfUserExist(username string , email string) (bool, int){
 	boolean := false
+	var userId int
+	
 	rows, _ := db.Query("SELECT idUser, username, email, password FROM users")
 	thisUser := User{}
 	for rows.Next(){
 		rows.Scan(&thisUser.IdUser, &thisUser.username, &thisUser.email, &thisUser.password)
 		if thisUser.username == username || thisUser.email == email {
 			boolean = true
+			userId = thisUser.IdUser
 		}
-		
 	}
-	return boolean
+	return boolean, userId
 }
 
+
+func GetUserByID(ID int) User {
+	rows, _ := db.Query("SELECT idUser, username, email, password FROM users")
+	userToReturn := User{}
+	user := User{}
+	for rows.Next(){
+		rows.Scan(&user.IdUser, &user.username, &user.email, &user.password)
+		if user.IdUser == ID {
+			userToReturn = user
+		}
+	}
+	return userToReturn
+}
+
+func (user *User) GetUsername() string{
+	return user.username
+}
 
