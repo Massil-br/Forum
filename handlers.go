@@ -32,24 +32,29 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		password := r.FormValue("password")
 		confirmPassword := r.FormValue("confirm_password")
 
+		exist := src.CheckIfUserExist(username, email)
+
+		if exist {
+			fmt.Println("username or email already taken ")
+			renderTemplate(w, "register") // Added to prevent inserting new data
+			return
+		}
+
 		hashedPassword, err := src.HashPassword(password)
 		if err != nil {
 			fmt.Println("error while hashing password")
 		}
-		
-
-		fmt.Println(hashedPassword)
 
 		match := src.CheckPasswordHash(confirmPassword, hashedPassword)
 
-		if match{
-			src.InsertUser(username, email, password)
-		http.Redirect(w, r, "/", http.StatusSeeOther)
-		return
+		if match {
+			src.InsertUser(username, email, hashedPassword)
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			src.ShowDatabase()
+			return
 		} else {
 			fmt.Println("password and confirmpassword are not the same")
 		}
-		
 	}
 	renderTemplate(w, "register")
 }

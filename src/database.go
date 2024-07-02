@@ -10,6 +10,13 @@ import (
 
 var db *sql.DB
 
+type User struct {
+	IdUser int
+	username string
+	email string
+	password string
+}
+
 func InitDB() {
 	var err error
 	db, err = sql.Open("sqlite3", "./forum.db")
@@ -48,3 +55,27 @@ func InsertUser(username, email, password string) {
 	}
 	fmt.Println("Inserted user successfully")
 }
+func ShowDatabase() {
+	rows, _ := db.Query("SELECT idUser, username, email, password FROM users ")
+	thisUser := User{}
+	for rows.Next() {
+		rows.Scan(&thisUser.IdUser, &thisUser.username, &thisUser.email, &thisUser.password)
+		fmt.Println(thisUser)
+	}
+}
+
+func  CheckIfUserExist(username string , email string) bool{
+	boolean := false
+	rows, _ := db.Query("SELECT idUser, username, email, password FROM users")
+	thisUser := User{}
+	for rows.Next(){
+		rows.Scan(&thisUser.IdUser, &thisUser.username, &thisUser.email, &thisUser.password)
+		if thisUser.username == username || thisUser.email == email {
+			boolean = true
+		}
+		
+	}
+	return boolean
+}
+
+
