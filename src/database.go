@@ -96,3 +96,7 @@ func GetUserByID(ID int) User {
 func (user *User) GetUsername() string {
 	return user.username
 }
+
+func (user *User) GetID() int {
+	return user.IdUser
+}

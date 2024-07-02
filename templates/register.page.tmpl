@@ -5,58 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/style.css">
     <title>Register Page</title>
-    <style>
-        .headerButton {
-            padding: 5px 10px; /* Réduire la taille du bouton */
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        .dropdownMenu {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 40px; /* Ajuster la position pour être sous le bouton */
-            background-color: white;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-            z-index: 1;
-        }
-        .dropdownMenu a {
-            display: block;
-            padding: 10px;
-            color: #333;
-            text-decoration: none;
-        }
-        .dropdownMenu a:hover {
-            background-color: #ddd;
-        }
-        .headerContainer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-    </style>
-    <script>
-        function toggleDropdown() {
-            var menu = document.getElementById("dropdownMenu");
-            if (menu.style.display === "block") {
-                menu.style.display = "none";
-            } else {
-                menu.style.display = "block";
-            }
-        }
-    </script>
 </head>
 <body>
     <header class="headerContainer">
         <h1 class="headerTitle"> Register Page</h1>
-        <div>
-            <button class="headerButton" onclick="toggleDropdown()">Menu</button>
             <div id="dropdownMenu" class="dropdownMenu">
                 <a href="/login">Connexion</a>
                 <a href="/register">Inscription</a>
-            </div>
         </div>
     </header>
     <main>

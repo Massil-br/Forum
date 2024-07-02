@@ -8,8 +8,16 @@
 </head>
 <body>
     <header>
-        <h1 class="headerTitle">Login Page</h1>
+        <h1 class="headerTitle">Create Category Page</h1>
     </header>
+    <div class="headerConexion">
+        {{if .}}
+            <a href="/profile">{{.GetUsername}}</a>
+        {{else}}
+            <a href="/login">Connexion</a>
+            <a href="/register">Inscription</a>
+        {{end}}
+    </div>
     <main>
         
     </main>
