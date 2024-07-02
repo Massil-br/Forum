@@ -100,3 +100,7 @@ func (user *User) GetUsername() string {
 func (user *User) GetID() int {
 	return user.IdUser
 }
+
+func (user *User) GetEmail() string{
+	return user.email
+}
