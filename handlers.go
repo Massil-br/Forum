@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/Massil-br/Forum.git/src"
+	"github.com/gofrs/uuid" // Added uuid package
 )
 
 var sessions = map[string]int{}
@@ -119,12 +120,17 @@ func getUserFromSession(r *http.Request) *src.User {
 }
 
 func setUserSession(w http.ResponseWriter, user *src.User) {
-	sessionToken := fmt.Sprintf("%d", time.Now().UnixNano())
-	sessions[sessionToken] = user.GetID()
+	// Generate a UUID for the session token
+	sessionToken, err := uuid.NewV4()
+	if err != nil {
+		http.Error(w, "Error generating session token", http.StatusInternalServerError)
+		return
+	}
+	sessions[sessionToken.String()] = user.GetID()
 	http.SetCookie(w, &http.Cookie{
 		Name:    "session_token",
-		Value:   sessionToken,
-		Expires: time.Now().Add(24 * time.Hour),
+		Value:   sessionToken.String(),
+		Expires: time.Now().Add(10 * time.Minute),
 	})
 }
 
