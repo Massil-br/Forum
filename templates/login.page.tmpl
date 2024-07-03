@@ -12,6 +12,7 @@
         <div class="headerConexion">
             {{if .}}
                 <a href="/profile">{{.GetUsername}}</a>
+                <a href="/logout">Déconnexion</a>
             {{else}}
                 <a href="/login">Connexion</a>
                 <a href="/register">Inscription</a>
@@ -28,6 +29,7 @@
                 <button id="loginButton" type="submit">Se connecter</button>
             </div>
         </form>
+       
     </main>
     <footer>
         <p class="footerText">© 2023 Notre Site. Tous droits réservés.</p>

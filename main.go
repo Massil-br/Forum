@@ -21,6 +21,8 @@ func main() {
 	http.HandleFunc("/categories", Categories)
 	http.HandleFunc("/create-category", CreateCategory)
 	http.HandleFunc("/create-post", CreatePost)
+	http.HandleFunc("/profile", Profile)
+	http.HandleFunc("/logout", Logout) 
 
 	fmt.Println("server started on port" + port)
 	fmt.Println("http://localhost" + port)

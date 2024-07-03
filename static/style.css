@@ -87,3 +87,15 @@ button:hover {
     margin: 0;
 }
 
+.profileUsername {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+.profileEmail {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+

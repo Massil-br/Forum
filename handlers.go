@@ -90,6 +90,11 @@ func Categories(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "categories", user)
 }
 
+func Profile(w http.ResponseWriter, r *http.Request){
+	user := getUserFromSession(r)
+	renderTemplate(w, "profile", user)
+}
+
 func CreateCategory(w http.ResponseWriter, r *http.Request) {
 	user := getUserFromSession(r)
 	renderTemplate(w, "create-category", user)
@@ -121,4 +126,24 @@ func setUserSession(w http.ResponseWriter, user *src.User) {
 		Value:   sessionToken,
 		Expires: time.Now().Add(24 * time.Hour),
 	})
+}
+
+func Logout(w http.ResponseWriter, r *http.Request) {
+    cookie, err := r.Cookie("session_token")
+    if err != nil {
+        http.Redirect(w, r, "/login", http.StatusSeeOther)
+        return
+    }
+
+    // Supprimer la session
+    delete(sessions, cookie.Value)
+
+    // Expirer le cookie
+    http.SetCookie(w, &http.Cookie{
+        Name:    "session_token",
+        Value:   "",
+        Expires: time.Now().Add(-1 * time.Hour),
+    })
+
+    http.Redirect(w, r, "/login", http.StatusSeeOther)
 }
