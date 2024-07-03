@@ -11,7 +11,7 @@ import (
 var db *sql.DB
 
 type User struct {
-	IdUser   int
+	idUser   int
 	username string
 	email    string
 	password string
@@ -59,7 +59,7 @@ func ShowDatabase() {
 	rows, _ := db.Query("SELECT idUser, username, email, password FROM users ")
 	thisUser := User{}
 	for rows.Next() {
-		rows.Scan(&thisUser.IdUser, &thisUser.username, &thisUser.email, &thisUser.password)
+		rows.Scan(&thisUser.idUser, &thisUser.username, &thisUser.email, &thisUser.password)
 		fmt.Println(thisUser)
 	}
 }
@@ -71,10 +71,10 @@ func CheckIfUserExist(username string, email string) (bool, int) {
 	rows, _ := db.Query("SELECT idUser, username, email, password FROM users")
 	thisUser := User{}
 	for rows.Next() {
-		rows.Scan(&thisUser.IdUser, &thisUser.username, &thisUser.email, &thisUser.password)
+		rows.Scan(&thisUser.idUser, &thisUser.username, &thisUser.email, &thisUser.password)
 		if thisUser.username == username || thisUser.email == email {
 			boolean = true
-			userId = thisUser.IdUser
+			userId = thisUser.idUser
 		}
 	}
 	return boolean, userId
@@ -85,8 +85,8 @@ func GetUserByID(ID int) User {
 	userToReturn := User{}
 	user := User{}
 	for rows.Next() {
-		rows.Scan(&user.IdUser, &user.username, &user.email, &user.password)
-		if user.IdUser == ID {
+		rows.Scan(&user.idUser, &user.username, &user.email, &user.password)
+		if user.idUser == ID {
 			userToReturn = user
 		}
 	}
@@ -98,7 +98,7 @@ func (user *User) GetUsername() string {
 }
 
 func (user *User) GetID() int {
-	return user.IdUser
+	return user.idUser
 }
 
 func (user *User) GetEmail() string{

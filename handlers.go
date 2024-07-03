@@ -37,6 +37,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		User := src.GetUserByID(ID)
 
 		match := User.CheckPassword(password)
+	
 
 		if match {
 			fmt.Println("Connected as ", User.GetUsername())
