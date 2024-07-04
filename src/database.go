@@ -5,17 +5,11 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/Massil-br/Forum.git/src/class"
 	_ "github.com/mattn/go-sqlite3"
 )
 
 var db *sql.DB
-
-type User struct {
-	idUser   int
-	username string
-	email    string
-	password string
-}
 
 func InitDB() {
 	var err error
@@ -42,14 +36,14 @@ func createTable() {
 	statement.Exec()
 	fmt.Println("User table created")
 
-	createCategoryTable:=`CREATE TABLE IF NOT EXISTS categories (
+	createCategoryTable := `CREATE TABLE IF NOT EXISTS categories (
 		"idCategory" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
 		"idCategoryCreator" integer,
 		"name" TEXT
 	)`
 
-	statement, err =db.Prepare(createCategoryTable)
-	if err != nil{
+	statement, err = db.Prepare(createCategoryTable)
+	if err != nil {
 		log.Fatal(err)
 	}
 	statement.Exec()
@@ -65,7 +59,7 @@ func createTable() {
 		"created_at" DATETIME DEFAULT CURRENT_TIMESTAMP
 	)`
 
-	statement , err = db.Prepare(createPostTable)
+	statement, err = db.Prepare(createPostTable)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -81,7 +75,7 @@ func createTable() {
 		"created_at" DATETIME DEFAULT CURRENT_TIMESTAMP
 	)`
 
-	statement , err = db.Prepare(createCommentTable)
+	statement, err = db.Prepare(createCommentTable)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -130,9 +124,9 @@ func InsertUser(username, email, password string) {
 
 func ShowDatabase() {
 	rows, _ := db.Query("SELECT idUser, username, email, password FROM users ")
-	thisUser := User{}
+	thisUser := class.User{}
 	for rows.Next() {
-		rows.Scan(&thisUser.idUser, &thisUser.username, &thisUser.email, &thisUser.password)
+		rows.Scan(thisUser.GetIDAdress(), thisUser.GetUsernameAdress(), thisUser.GetEmailAdress(), thisUser.GetPasswordAdress())
 		fmt.Println(thisUser)
 	}
 }
@@ -142,38 +136,26 @@ func CheckIfUserExist(username string, email string) (bool, int) {
 	var userId int
 
 	rows, _ := db.Query("SELECT idUser, username, email, password FROM users")
-	thisUser := User{}
+	thisUser := class.User{}
 	for rows.Next() {
-		rows.Scan(&thisUser.idUser, &thisUser.username, &thisUser.email, &thisUser.password)
-		if thisUser.username == username || thisUser.email == email {
+		rows.Scan(thisUser.GetIDAdress(), thisUser.GetUsernameAdress(), thisUser.GetEmailAdress(), thisUser.GetPasswordAdress())
+		if thisUser.GetUsername() == username || thisUser.GetEmail() == email {
 			boolean = true
-			userId = thisUser.idUser
+			userId = thisUser.GetID()
 		}
 	}
 	return boolean, userId
 }
 
-func GetUserByID(ID int) User {
+func GetUserByID(ID int) class.User {
 	rows, _ := db.Query("SELECT idUser, username, email, password FROM users")
-	userToReturn := User{}
-	user := User{}
+	userToReturn := class.User{}
+	user := class.User{}
 	for rows.Next() {
-		rows.Scan(&user.idUser, &user.username, &user.email, &user.password)
-		if user.idUser == ID {
+		rows.Scan(user.GetIDAdress(), user.GetUsernameAdress(), user.GetEmailAdress(), user.GetPasswordAdress())
+		if user.GetID() == ID {
 			userToReturn = user
 		}
 	}
 	return userToReturn
-}
-
-func (user *User) GetUsername() string {
-	return user.username
-}
-
-func (user *User) GetID() int {
-	return user.idUser
-}
-
-func (user *User) GetEmail() string{
-	return user.email
 }

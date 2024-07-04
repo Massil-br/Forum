@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/Massil-br/Forum.git/src"
+	"github.com/Massil-br/Forum.git/src/class"
 	"github.com/gofrs/uuid" // Added uuid package
 )
 
@@ -38,7 +39,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		User := src.GetUserByID(ID)
 
 		match := User.CheckPassword(password)
-	
 
 		if match {
 			fmt.Println("Connected as ", User.GetUsername())
@@ -91,7 +91,7 @@ func Categories(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "categories", user)
 }
 
-func Profile(w http.ResponseWriter, r *http.Request){
+func Profile(w http.ResponseWriter, r *http.Request) {
 	user := getUserFromSession(r)
 	renderTemplate(w, "profile", user)
 }
@@ -106,7 +106,7 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "create-post", user)
 }
 
-func getUserFromSession(r *http.Request) *src.User {
+func getUserFromSession(r *http.Request) *class.User {
 	cookie, err := r.Cookie("session_token")
 	if err != nil {
 		return nil
@@ -119,7 +119,7 @@ func getUserFromSession(r *http.Request) *src.User {
 	return &user
 }
 
-func setUserSession(w http.ResponseWriter, user *src.User) {
+func setUserSession(w http.ResponseWriter, user *class.User) {
 	// Generate a UUID for the session token
 	sessionToken, err := uuid.NewV4()
 	if err != nil {
@@ -135,21 +135,21 @@ func setUserSession(w http.ResponseWriter, user *src.User) {
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {
-    cookie, err := r.Cookie("session_token")
-    if err != nil {
-        http.Redirect(w, r, "/login", http.StatusSeeOther)
-        return
-    }
+	cookie, err := r.Cookie("session_token")
+	if err != nil {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
 
-    // Supprimer la session
-    delete(sessions, cookie.Value)
+	// Supprimer la session
+	delete(sessions, cookie.Value)
 
-    // Expirer le cookie
-    http.SetCookie(w, &http.Cookie{
-        Name:    "session_token",
-        Value:   "",
-        Expires: time.Now().Add(-1 * time.Hour),
-    })
+	// Expirer le cookie
+	http.SetCookie(w, &http.Cookie{
+		Name:    "session_token",
+		Value:   "",
+		Expires: time.Now().Add(-1 * time.Hour),
+	})
 
-    http.Redirect(w, r, "/login", http.StatusSeeOther)
+	http.Redirect(w, r, "/login", http.StatusSeeOther)
 }
