@@ -41,6 +41,78 @@ func createTable() {
 	}
 	statement.Exec()
 	fmt.Println("User table created")
+
+	createCategoryTable:=`CREATE TABLE IF NOT EXISTS categories (
+		"idCategory" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+		"idCategoryCreator" integer,
+		"name" TEXT
+	)`
+
+	statement, err =db.Prepare(createCategoryTable)
+	if err != nil{
+		log.Fatal(err)
+	}
+	statement.Exec()
+	fmt.Println("Category Table created")
+
+	createPostTable := `CREATE TABLE IF NOT EXISTS posts(
+		"idPost" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+		"categoryID" integer,
+		"idPostCreator" integer,
+		"postTitle" TEXT,
+		"postContent" TEXT,
+		"likes" integer,
+		"created_at" DATETIME DEFAULT CURRENT_TIMESTAMP
+	)`
+
+	statement , err = db.Prepare(createPostTable)
+	if err != nil {
+		log.Fatal(err)
+	}
+	statement.Exec()
+	fmt.Println("Post Table created")
+
+	createCommentTable := `CREATE TABLE IF NOT EXISTS comments(
+		"idComment" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+		"idCommentCreator" integer,
+		"idPostOfComment" integer,
+		"commentContent" TEXT,
+		"likes" integer,
+		"created_at" DATETIME DEFAULT CURRENT_TIMESTAMP
+	)`
+
+	statement , err = db.Prepare(createCommentTable)
+	if err != nil {
+		log.Fatal(err)
+	}
+	statement.Exec()
+	fmt.Println("Comments Table created")
+
+	createFavoriteCategoryTable := `CREATE TABLE IF NOT EXISTS favoriteCategories(
+		"idCategory" integer,
+		"idUser" integer
+	)`
+
+	statement, err = db.Prepare(createFavoriteCategoryTable)
+	if err != nil {
+		log.Fatal(err)
+	}
+	statement.Exec()
+	fmt.Println("Favorite Categories Table created")
+
+	createLikesTable := `CREATE TABLE IF NOT EXISTS likes(
+		"idLike" integer NOT NULL PRIMARY KEY AUTOINCREMENT, 
+		"idUser" integer,
+		"idPost" integer
+	)`
+
+	statement, err = db.Prepare(createLikesTable)
+	if err != nil {
+		log.Fatal(err)
+	}
+	statement.Exec()
+	fmt.Println("Likes Table created")
+
 }
 
 func InsertUser(username, email, password string) {
@@ -55,6 +127,7 @@ func InsertUser(username, email, password string) {
 	}
 	fmt.Println("Inserted user successfully")
 }
+
 func ShowDatabase() {
 	rows, _ := db.Query("SELECT idUser, username, email, password FROM users ")
 	thisUser := User{}
