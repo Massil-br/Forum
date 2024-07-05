@@ -19,6 +19,7 @@ type Server struct {
 
 var server = Server{}
 
+
 func Home(w http.ResponseWriter, r *http.Request) {
 	user := getUserFromSession(r)
 	if user != nil {
@@ -52,6 +53,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 }
 
 func Categories(w http.ResponseWriter, r *http.Request) {
+	
 	user := getUserFromSession(r)
 	if user != nil {
 		server.User = user
@@ -72,6 +74,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateCategory(w http.ResponseWriter, r *http.Request) {
+	createCategory(w, r)
 	user := getUserFromSession(r)
 	if user != nil {
 		server.User = user
@@ -195,6 +198,16 @@ func login(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+
+func createCategory(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		name := r.FormValue("name")
+		src.InsertCategory(name, server.User.GetID())
+		http.Redirect(w, r, "/categories", http.StatusSeeOther)
+		return
+	}
+}
+
 func renderTemplate(w http.ResponseWriter, tmpl string, data interface{}) {
 	t, err := template.ParseFiles("./templates/" + tmpl + ".page.tmpl")
 	if err != nil {
@@ -203,3 +216,5 @@ func renderTemplate(w http.ResponseWriter, tmpl string, data interface{}) {
 	}
 	t.Execute(w, data)
 }
+
+

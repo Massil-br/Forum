@@ -98,4 +98,15 @@ button:hover {
     font-weight: bold;
 }
 
+.headerConexion {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+}
 
+.notConnected {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+}

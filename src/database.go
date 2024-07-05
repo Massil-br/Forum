@@ -159,3 +159,12 @@ func GetUserByID(ID int) class.User {
 	}
 	return userToReturn
 }
+
+func InsertCategory(name string, userID int) {
+	insertCategorySQL := `INSERT INTO categories(idCategoryCreator, name) VALUES (?, ?)`
+	statement, err := db.Prepare(insertCategorySQL)
+	if err != nil {
+		log.Fatal(err)
+	}
+	statement.Exec(userID, name)
+}
