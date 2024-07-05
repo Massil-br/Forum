@@ -12,8 +12,9 @@
         <a href="/logout">Déconnexion</a>
     </header>
     <div class="headerConexion">
-        {{if .}}
-            <a href="/profile">{{.GetUsername}}</a>
+        {{if .User}}
+            <a href="/profile">{{.User.GetUsername}}</a>
+            <a href="/logout">Déconnexion</a>
         {{else}}
             <a href="/login">Connexion</a>
             <a href="/register">Inscription</a>

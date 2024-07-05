@@ -13,59 +13,83 @@ import (
 
 var sessions = map[string]int{}
 
+type Server struct {
+	User *class.User
+}
 
+var server = Server{}
 
 func Home(w http.ResponseWriter, r *http.Request) {
 	user := getUserFromSession(r)
-	renderTemplate(w, "home", user)
+	if user != nil {
+		server.User = user
+	} else {
+		server.User = nil
+	}
+	renderTemplate(w, "home", server)
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	login(w,r)
+	login(w, r)
 	user := getUserFromSession(r)
-	renderTemplate(w, "login", user)
+	if user != nil {
+		server.User = user
+	} else {
+		server.User = nil
+	}
+	renderTemplate(w, "login", server)
 }
 
 func Register(w http.ResponseWriter, r *http.Request) {
 	register(w, r)
-	renderTemplate(w, "register", nil)
+	user := getUserFromSession(r)
+	if user != nil {
+		server.User = user
+	} else {
+		server.User = nil
+	}
+	renderTemplate(w, "register", server)
 }
 
 func Categories(w http.ResponseWriter, r *http.Request) {
 	user := getUserFromSession(r)
-	renderTemplate(w, "categories", user)
+	if user != nil {
+		server.User = user
+	} else {
+		server.User = nil
+	}
+	renderTemplate(w, "categories", server)
 }
 
 func Profile(w http.ResponseWriter, r *http.Request) {
 	user := getUserFromSession(r)
-	renderTemplate(w, "profile", user)
+	if user != nil {
+		server.User = user
+	} else {
+		server.User = nil
+	}
+	renderTemplate(w, "profile", server)
 }
 
 func CreateCategory(w http.ResponseWriter, r *http.Request) {
 	user := getUserFromSession(r)
-	renderTemplate(w, "create-category", user)
+	if user != nil {
+		server.User = user
+	} else {
+		server.User = nil
+	}
+	renderTemplate(w, "create-category", server)
 }
 
 func CreatePost(w http.ResponseWriter, r *http.Request) {
 	user := getUserFromSession(r)
-	renderTemplate(w, "create-post", user)
+	if user != nil {
+		server.User = user
+	} else {
+		server.User = nil
+	}
+	renderTemplate(w, "create-post", server)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 func getUserFromSession(r *http.Request) *class.User {
 	cookie, err := r.Cookie("session_token")
@@ -79,8 +103,6 @@ func getUserFromSession(r *http.Request) *class.User {
 	user := src.GetUserByID(userID)
 	return &user
 }
-
-
 
 func setUserSession(w http.ResponseWriter, user *class.User) {
 	// Generate a UUID for the session token
@@ -96,10 +118,6 @@ func setUserSession(w http.ResponseWriter, user *class.User) {
 		Expires: time.Now().Add(10 * time.Minute),
 	})
 }
-
-
-
-
 
 func Logout(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("session_token")
@@ -120,7 +138,6 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/login", http.StatusSeeOther)
 }
-
 
 func register(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
@@ -178,7 +195,6 @@ func login(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-
 func renderTemplate(w http.ResponseWriter, tmpl string, data interface{}) {
 	t, err := template.ParseFiles("./templates/" + tmpl + ".page.tmpl")
 	if err != nil {
@@ -187,4 +203,3 @@ func renderTemplate(w http.ResponseWriter, tmpl string, data interface{}) {
 	}
 	t.Execute(w, data)
 }
-
