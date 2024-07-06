@@ -9,7 +9,6 @@
 <body>
     <header>
         <h1 class="headerTitle">Categories Page</h1>
-        <a href="/logout">Déconnexion</a>
     </header>
     <div class="headerConexion">
         {{if .User}}
@@ -21,7 +20,11 @@
         {{end}}
     </div>
     <main>
-        
+        {{range .Categories}}
+            <div class="category">
+                <h2 class = "categoryTitle">{{.GetName}}</h2>
+            </div>
+        {{end}}
     </main>
     <footer>
         <p class="footerText">© 2024 Notre Site. Tous droits réservés.</p>

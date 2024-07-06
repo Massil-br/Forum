@@ -168,3 +168,23 @@ func InsertCategory(name string, userID int) {
 	}
 	statement.Exec(userID, name)
 }
+
+func InsertPost(title string, content string, userID int, categoryID int) {
+	insertPostSQL := `INSERT INTO posts(idPostCreator, categoryID, postTitle, postContent) VALUES (?, ?, ?, ?)`
+	statement, err := db.Prepare(insertPostSQL)
+	if err != nil {
+		log.Fatal(err)
+	}
+	statement.Exec(userID, categoryID, title, content)
+}
+
+func GetCategories() []class.Category {
+	rows, _ := db.Query("SELECT idCategory, idCategoryCreator, name FROM categories")
+	category := class.Category{}
+	Categories := []class.Category{}
+	for rows.Next() {
+		rows.Scan(category.GetIDAdress(), category.GetCategoryCreatorIDAdress(), category.GetNameAdress())
+		Categories = append(Categories, category)
+	}
+	return Categories
+}

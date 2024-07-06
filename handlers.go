@@ -15,6 +15,7 @@ var sessions = map[string]int{}
 
 type Server struct {
 	User *class.User
+	Categories []class.Category
 }
 
 var server = Server{}
@@ -60,6 +61,7 @@ func Categories(w http.ResponseWriter, r *http.Request) {
 	} else {
 		server.User = nil
 	}
+	server.Categories = src.GetCategories()
 	renderTemplate(w, "categories", server)
 }
 
@@ -93,6 +95,11 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 	}
 	renderTemplate(w, "create-post", server)
 }
+
+/* from here to the bottom
+the code is not for loading 
+pages but only funcs that
+are used in the handlers */
 
 func getUserFromSession(r *http.Request) *class.User {
 	cookie, err := r.Cookie("session_token")

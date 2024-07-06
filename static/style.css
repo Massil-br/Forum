@@ -110,3 +110,9 @@ button:hover {
     font-weight: bold;
     text-align: center;
 }
+
+.categoryTitle {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}

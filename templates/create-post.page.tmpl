@@ -20,7 +20,17 @@
         {{end}}
     </div>
     <main>
-        
+        {{if .User}}
+        <form action="/create-post" method="post">
+            <input type="text" name="title" placeholder="Titre du post">
+            <input type="text" name="content" placeholder="Contenu du post">
+            <input type="submit" value="Créer">
+        </form>
+        {{else}}
+            <p class="notConnected">Vous devez vous connecter pour créer une catégorie</p>
+            <a href="/login">Connexion</a>
+            <a href="/register">Inscription</a>
+        {{end}}
     </main>
     <footer>
         <p class="footerText">© 2024 Notre Site. Tous droits réservés.</p>
