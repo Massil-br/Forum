@@ -2,6 +2,7 @@ package src
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 
@@ -190,16 +191,30 @@ func GetCategories() []class.Category {
 	return Categories
 }
 
-func GetPostsByID(categoryID int) []class.Post {
-	rows, _ := db.Query("SELECT idPost, categoryID, idPostCreator, postTitle, postContent, likes")
-	post := class.Post{}
-	posts := []class.Post{}
-	for rows.Next() {
-		rows.Scan(post.GetIDAdress(), post.GetIDCategoryAdress(), post.GetIDPostCreatorAdress(), post.GetPostTitleAdress(), post.GetPostContentAdress(), post.GetPostLikesAdress())
-		if post.GetIDCategory() == categoryID{
-			posts = append(posts, post)
-		}
-		
+func GetPostsByID(categoryID int) ([]class.Post, error) {
+	var posts []class.Post
+
+	rows, err := db.Query("SELECT idPost, categoryID, idPostCreator, postTitle, postContent, likes FROM posts WHERE categoryID = ?", categoryID)
+	if err != nil {
+		return nil, err
 	}
-	return posts
+	defer rows.Close()
+
+	for rows.Next() {
+		var post class.Post
+		if err := rows.Scan(post.GetIDAdress(), post.GetIDCategoryAdress(), post.GetIDPostCreatorAdress(), post.GetPostTitleAdress(), post.GetPostContentAdress(), post.GetPostLikesAdress()); err != nil {
+			return nil, err
+		}
+		posts = append(posts, post)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	if len(posts) == 0 {
+		return nil, errors.New("no posts found for this category")
+	}
+
+	return posts, nil
 }

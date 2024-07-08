@@ -109,10 +109,11 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Récupérer l'ID de la catégorie à partir de l'URL
-	categoryIDStr := strings.TrimPrefix(r.URL.Path, "/categories/")
+	categoryIDStr := strings.TrimPrefix(r.URL.Path, "/postlist/")
 	categoryIDStr, err := url.PathUnescape(categoryIDStr)
 	if err != nil {
 		http.Error(w, "Invalid category ID", http.StatusBadRequest)
+		fmt.Println("Error unescaping category ID:", err)
 		return
 	}
 
@@ -120,11 +121,16 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	categoryID, err := strconv.Atoi(categoryIDStr)
 	if err != nil {
 		http.Error(w, "Invalid category ID", http.StatusBadRequest)
+		fmt.Println("Error converting category ID to integer:", err)
 		return
 	}
 
 	// Récupérer les posts par ID de catégorie
-	server.Posts = src.GetPostsByID(categoryID)
+	server.Posts , err= src.GetPostsByID(categoryID)
+	if err != nil {
+		fmt.Println(err)
+	}
+	
 
 	renderTemplate(w, "post", server)
 }
