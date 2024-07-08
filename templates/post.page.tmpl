@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categories Page</title>
+    <title>Posts Page</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <header>
-        <h1 class="headerTitle">Categories Page</h1>
+        <h1 class="headerTitle">Posts Page</h1>
     </header>
     <div class="headerConexion">
         {{if .User}}
@@ -20,9 +20,9 @@
         {{end}}
     </div>
     <main>
-        {{range .Categories}}
-            <div class="category">
-                <a href="/postlist/{{.GetID}}">{{.GetName}}</a>
+        {{range .Posts}}
+            <div class="posts">
+                <h2 class="postTitle"><a href="/posts/{{.GetId}}">{{.GetPostTitle}}</a></h2>
             </div>
         {{end}}
     </main>

@@ -4,22 +4,25 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 	"time"
 
+	"github.com/Massil-br/Forum.git/class"
 	"github.com/Massil-br/Forum.git/src"
-	"github.com/Massil-br/Forum.git/src/class"
 	"github.com/gofrs/uuid" // Added uuid package
 )
 
 var sessions = map[string]int{}
 
 type Server struct {
-	User *class.User
+	User       *class.User
 	Categories []class.Category
+	Posts      []class.Post // Correction de la casse pour "Posts"
 }
 
 var server = Server{}
-
 
 func Home(w http.ResponseWriter, r *http.Request) {
 	user := getUserFromSession(r)
@@ -62,6 +65,7 @@ func Categories(w http.ResponseWriter, r *http.Request) {
 		server.User = nil
 	}
 	server.Categories = src.GetCategories()
+	
 	renderTemplate(w, "categories", server)
 }
 
@@ -96,8 +100,37 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "create-post", server)
 }
 
+func Post(w http.ResponseWriter, r *http.Request) {
+	user := getUserFromSession(r)
+	if user != nil {
+		server.User = user
+	} else {
+		server.User = nil
+	}
+
+	// Récupérer l'ID de la catégorie à partir de l'URL
+	categoryIDStr := strings.TrimPrefix(r.URL.Path, "/categories/")
+	categoryIDStr, err := url.PathUnescape(categoryIDStr)
+	if err != nil {
+		http.Error(w, "Invalid category ID", http.StatusBadRequest)
+		return
+	}
+
+	// Convertir l'ID de la catégorie en entier
+	categoryID, err := strconv.Atoi(categoryIDStr)
+	if err != nil {
+		http.Error(w, "Invalid category ID", http.StatusBadRequest)
+		return
+	}
+
+	// Récupérer les posts par ID de catégorie
+	server.Posts = src.GetPostsByID(categoryID)
+
+	renderTemplate(w, "post", server)
+}
+
 /* from here to the bottom
-the code is not for loading 
+the code is not for loading
 pages but only funcs that
 are used in the handlers */
 
@@ -205,7 +238,6 @@ func login(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-
 func createCategory(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		name := r.FormValue("name")
@@ -223,5 +255,3 @@ func renderTemplate(w http.ResponseWriter, tmpl string, data interface{}) {
 	}
 	t.Execute(w, data)
 }
-
-

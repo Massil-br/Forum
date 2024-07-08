@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/Massil-br/Forum.git/src/class"
+	"github.com/Massil-br/Forum.git/class"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -186,5 +186,20 @@ func GetCategories() []class.Category {
 		rows.Scan(category.GetIDAdress(), category.GetCategoryCreatorIDAdress(), category.GetNameAdress())
 		Categories = append(Categories, category)
 	}
+	fmt.Println(Categories)
 	return Categories
+}
+
+func GetPostsByID(categoryID int) []class.Post {
+	rows, _ := db.Query("SELECT idPost, categoryID, idPostCreator, postTitle, postContent, likes")
+	post := class.Post{}
+	posts := []class.Post{}
+	for rows.Next() {
+		rows.Scan(post.GetIDAdress(), post.GetIDCategoryAdress(), post.GetIDPostCreatorAdress(), post.GetPostTitleAdress(), post.GetPostContentAdress(), post.GetPostLikesAdress())
+		if post.GetIDCategory() == categoryID{
+			posts = append(posts, post)
+		}
+		
+	}
+	return posts
 }

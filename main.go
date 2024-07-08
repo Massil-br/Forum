@@ -22,7 +22,8 @@ func main() {
 	http.HandleFunc("/create-category", CreateCategory)
 	http.HandleFunc("/create-post", CreatePost)
 	http.HandleFunc("/profile", Profile)
-	http.HandleFunc("/logout", Logout) 
+	http.HandleFunc("/logout", Logout)
+	http.HandleFunc("/postlist/", Post) // Correction du chemin
 
 	fmt.Println("server started on port" + port)
 	fmt.Println("http://localhost" + port)
