@@ -21,6 +21,18 @@ func InitDB() {
 
 	createTable()
 }
+func DropTable(tableName string) error {
+	dropTableSQL := fmt.Sprintf("DROP TABLE IF EXISTS %s", tableName)
+	statement, err := db.Prepare(dropTableSQL)
+	if err != nil {
+		return fmt.Errorf("error preparing statement: %v", err)
+	}
+	_, err = statement.Exec()
+	if err != nil {
+		return fmt.Errorf("error executing statement: %v", err)
+	}
+	return nil
+}
 
 func createTable() {
 	createUserTableSQL := `CREATE TABLE IF NOT EXISTS users (
@@ -170,13 +182,19 @@ func InsertCategory(name string, userID int) {
 	statement.Exec(userID, name)
 }
 
-func InsertPost(title string, content string, userID int, categoryID int) {
-	insertPostSQL := `INSERT INTO posts(idPostCreator, categoryID, postTitle, postContent) VALUES (?, ?, ?, ?)`
+func InsertPost(title string, content string, userID int, categoryID int) error {
+	insertPostSQL := `INSERT INTO posts(idPostCreator, categoryID, postTitle, postContent, likes) VALUES (?, ?, ?, ?, ?)`
 	statement, err := db.Prepare(insertPostSQL)
 	if err != nil {
 		log.Fatal(err)
+		return err
 	}
-	statement.Exec(userID, categoryID, title, content)
+	_, err = statement.Exec(userID, categoryID, title, content, 0) // Initialiser les likes à zéro
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+	return nil
 }
 
 func GetCategories() []class.Category {

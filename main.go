@@ -11,7 +11,6 @@ const port = ":8080"
 
 func main() {
 	src.InitDB() // Initialiser la base de données
-
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
@@ -23,7 +22,8 @@ func main() {
 	http.HandleFunc("/create-post", CreatePost)
 	http.HandleFunc("/profile", Profile)
 	http.HandleFunc("/logout", Logout)
-	http.HandleFunc("/postlist/", Post) // Correction du chemin
+	http.HandleFunc("/postlist/", PostList) 
+	http.HandleFunc("/posts/", PostContent)
 
 	fmt.Println("server started on port" + port)
 	fmt.Println("http://localhost" + port)

@@ -22,9 +22,15 @@
     <main>
         {{if .User}}
         <form action="/create-post" method="post">
-            <input type="text" name="title" placeholder="Titre du post">
-            <input type="text" name="content" placeholder="Contenu du post">
-            <input type="submit" value="Créer">
+            <label for="category">Catégorie</label>
+            <select name="category" class="form-control">
+                {{range .Categories}}
+                    <option value="{{.GetID}}">{{.GetName}}</option>
+                {{end}}
+            </select>
+            <input type="text" name="title" placeholder="Titre du post" class="form-control">
+            <textarea name="content" placeholder="Contenu du post" class="form-control" rows="10"></textarea>
+            <input type="submit" value="Créer" class="form-control">
         </form>
         {{else}}
             <p class="notConnected">Vous devez vous connecter pour créer une catégorie</p>

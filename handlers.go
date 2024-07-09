@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -57,7 +58,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 }
 
 func Categories(w http.ResponseWriter, r *http.Request) {
-	
+
 	user := getUserFromSession(r)
 	if user != nil {
 		server.User = user
@@ -65,7 +66,7 @@ func Categories(w http.ResponseWriter, r *http.Request) {
 		server.User = nil
 	}
 	server.Categories = src.GetCategories()
-	
+
 	renderTemplate(w, "categories", server)
 }
 
@@ -91,16 +92,19 @@ func CreateCategory(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreatePost(w http.ResponseWriter, r *http.Request) {
+	createPost(w, r)
 	user := getUserFromSession(r)
 	if user != nil {
 		server.User = user
 	} else {
 		server.User = nil
 	}
+	server.Categories = src.GetCategories()
+
 	renderTemplate(w, "create-post", server)
 }
 
-func Post(w http.ResponseWriter, r *http.Request) {
+func PostList(w http.ResponseWriter, r *http.Request) {
 	user := getUserFromSession(r)
 	if user != nil {
 		server.User = user
@@ -126,13 +130,23 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Récupérer les posts par ID de catégorie
-	server.Posts , err= src.GetPostsByID(categoryID)
+	server.Posts, err = src.GetPostsByID(categoryID)
 	if err != nil {
 		fmt.Println(err)
 	}
-	
 
-	renderTemplate(w, "post", server)
+	renderTemplate(w, "post-list", server)
+}
+
+
+func PostContent(w http.ResponseWriter, r *http.Request){
+	user := getUserFromSession(r)
+	if user != nil {
+		server.User = user
+	}else {
+		server.User = nil
+	}
+
 }
 
 /* from here to the bottom
@@ -260,4 +274,32 @@ func renderTemplate(w http.ResponseWriter, tmpl string, data interface{}) {
 		return
 	}
 	t.Execute(w, data)
+}
+
+func createPost(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		title := r.FormValue("title")
+		content := r.FormValue("content")
+		categoryID, err := strconv.Atoi(r.FormValue("category"))
+		if err != nil {
+			http.Error(w, "Invalid category ID", http.StatusBadRequest)
+			log.Printf("Error converting category ID: %v", err)
+			return
+		}
+		user := getUserFromSession(r)
+		if user != nil {
+			server.User = user
+		} else {
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			return
+		}
+		err = src.InsertPost(title, content, server.User.GetID(), categoryID)
+		if err != nil {
+			http.Error(w, "Error inserting post", http.StatusInternalServerError)
+			log.Printf("Error inserting post: %v", err)
+			return
+		}
+		http.Redirect(w, r, "/categories", http.StatusSeeOther)
+		return
+	}
 }
