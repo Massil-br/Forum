@@ -21,6 +21,8 @@ type Server struct {
 	User       *class.User
 	Categories []class.Category
 	Posts      []class.Post 
+	Post *class.Post
+
 }
 
 var server = Server{}
@@ -133,6 +135,8 @@ func PostList(w http.ResponseWriter, r *http.Request) {
 	server.Posts, err = src.GetPostsByID(categoryID)
 	if err != nil {
 		fmt.Println(err)
+		http.Redirect(w, r, "/categories", http.StatusSeeOther)
+		return
 	}
 
 	renderTemplate(w, "post-list", server)
@@ -147,6 +151,28 @@ func PostContent(w http.ResponseWriter, r *http.Request){
 		server.User = nil
 	}
 
+	postIDStr := strings.TrimPrefix(r.URL.Path, "/posts/")
+	postIDStr, err := url.PathUnescape(postIDStr)
+	if err != nil {
+		http.Error(w, "Invalid post ID", http.StatusBadRequest)
+		fmt.Println("Error unescaping post ID:", err)
+		return
+	}
+	postID, err := strconv.Atoi(postIDStr)
+	if err != nil {
+		http.Error(w, "Invalid post ID", http.StatusBadRequest)
+		fmt.Println("Error converting post ID to integer:", err)
+		return
+	}
+
+	for _, post := range server.Posts {
+		if post.GetID() == postID {
+			server.Post = &post
+		}
+	}
+	fmt.Println("Post to display:", server.Post) // Ajout de log
+
+	renderTemplate(w, "post", server)
 }
 
 /* from here to the bottom

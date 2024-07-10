@@ -236,3 +236,23 @@ func GetPostsByID(categoryID int) ([]class.Post, error) {
 
 	return posts, nil
 }
+
+func GetPostToDisplayByID(ID int) class.Post {
+	postToDisplay := class.Post{}
+	rows, err := db.Query("SELECT idPost, categoryID, idPostCreator, postTitle, postContent, likes FROM posts WHERE idPost = ?", ID)
+	if err != nil {
+		fmt.Println("error accessing db")
+		return postToDisplay
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var post class.Post
+		if err := rows.Scan(post.GetIDAdress(), post.GetIDCategoryAdress(), post.GetIDPostCreatorAdress(), post.GetPostTitleAdress(), post.GetPostContentAdress(), post.GetPostLikesAdress()); err != nil {
+			fmt.Println("error attribuating data to post")
+			return postToDisplay 
+		}
+		postToDisplay = post
+		fmt.Println("Post retrieved:", postToDisplay) 
+	}
+	return postToDisplay
+}

@@ -14,13 +14,14 @@
             <a class = "headerHome" href="/categories">Categories</a>
         </div>
         <div class="headerConexion">
-            {{if .User}}
+        {{if .User}}
                 <a href="/profile">{{.User.GetUsername}}</a>
                 <a href="/logout">Déconnexion</a>
-            {{else}}
+         {{else}}
                 <a href="/login">Connexion</a>
                 <a href="/register">Inscription</a>
-            {{end}}
+                <a href="/create-post">Create Post</a>
+          {{end}}
         </div>
     </header>
     

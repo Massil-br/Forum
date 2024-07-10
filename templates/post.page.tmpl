@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categories Page</title>
+    <title>Posts Page</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <header>
-        <h1 class="headerTitle">Categories Page</h1>
+        <h1 class="headerTitle">Posts Page</h1>
         <div class="headerHome">
-            <a class = "headerHome" href="/">Home</a>
-            <a class = "headerHome" href="/categories">Categories</a>
-            <a class = "headerHome" href="/create-category">Create Category</a>
-            <a class="headerHome" href="/create-post">Create Post</a>
+            <a class="headerHome" href="/">Home</a>
+            <a class="headerHome" href="/categories">Categories</a>
         </div>
         <div class="headerConexion">
             {{if .User}}
@@ -25,13 +23,12 @@
             {{end}}
         </div>
     </header>
-   
+    
     <main>
-        {{range .Categories}}
-            <div class="category">
-                <a class="category" href="/postlist/{{.GetID}}">{{.GetName}}</a>
-            </div>
-        {{end}}
+        <div class="post">
+            <h2 class="postTitle">{{.Post.GetPostTitle}}</h2>
+            <p class="postContent">{{.Post.GetPostContent}}</p>    
+        </div>
     </main>
     <footer>
         <p class="footerText">© 2024 Notre Site. Tous droits réservés.</p>
