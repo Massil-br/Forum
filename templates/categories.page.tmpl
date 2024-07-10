@@ -9,20 +9,25 @@
 <body>
     <header>
         <h1 class="headerTitle">Categories Page</h1>
+        <div class="headerHome">
+            <a class = "headerHome" href="/">Home</a>
+            <a class = "headerHome" href="/categories">Categories</a>
+        </div>
+        <div class="headerConexion">
+            {{if .User}}
+                <a href="/profile">{{.User.GetUsername}}</a>
+                <a href="/logout">Déconnexion</a>
+            {{else}}
+                <a href="/login">Connexion</a>
+                <a href="/register">Inscription</a>
+            {{end}}
+        </div>
     </header>
-    <div class="headerConexion">
-        {{if .User}}
-            <a href="/profile">{{.User.GetUsername}}</a>
-            <a href="/logout">Déconnexion</a>
-        {{else}}
-            <a href="/login">Connexion</a>
-            <a href="/register">Inscription</a>
-        {{end}}
-    </div>
+   
     <main>
         {{range .Categories}}
             <div class="category">
-                <a href="/postlist/{{.GetID}}">{{.GetName}}</a>
+                <a class="category" href="/postlist/{{.GetID}}">{{.GetName}}</a>
             </div>
         {{end}}
     </main>

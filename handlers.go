@@ -12,7 +12,7 @@ import (
 
 	"github.com/Massil-br/Forum.git/class"
 	"github.com/Massil-br/Forum.git/src"
-	"github.com/gofrs/uuid" // Added uuid package
+	"github.com/gofrs/uuid"
 )
 
 var sessions = map[string]int{}
@@ -20,7 +20,7 @@ var sessions = map[string]int{}
 type Server struct {
 	User       *class.User
 	Categories []class.Category
-	Posts      []class.Post // Correction de la casse pour "Posts"
+	Posts      []class.Post 
 }
 
 var server = Server{}
@@ -129,7 +129,7 @@ func PostList(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Récupérer les posts par ID de catégorie
+	
 	server.Posts, err = src.GetPostsByID(categoryID)
 	if err != nil {
 		fmt.Println(err)

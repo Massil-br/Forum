@@ -9,13 +9,16 @@
 <body>
     <header class="headerContainer">
         <h1 class="headerTitle">Login Page</h1>
+        <div class="headerHome">
+            <a class = "headerHome" href="/">Home</a>
+            <a class = "headerHome" href="/categories">Categories</a>
+        </div>
         <div class="headerConexion">
             {{if .User}}
                 <a href="/profile">{{.User.GetUsername}}</a>
                 <a href="/logout">Déconnexion</a>
             {{else}}
-                <a href="/login">Connexion</a>
-                <a href="/register">Inscription</a>
+                <a class="headerConexion" href="/register">Inscription</a>
             {{end}}
         </div>
     </header>

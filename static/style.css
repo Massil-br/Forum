@@ -8,6 +8,9 @@ body {
     margin: 0;
     padding: 0;
 }
+a { 
+    color:white;
+}
 
 header, footer {
     width: 100%;
@@ -99,11 +102,13 @@ button:hover {
 }
 
 .headerConexion {
+    color:white;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end; /* Aligner à droite */
     gap: 10px;
-    margin: 10px 0;
+    margin-right: 30px;
 }
+
 
 .notConnected {
     color: red;
@@ -127,4 +132,32 @@ button:hover {
     padding: 8px;
     margin-bottom: 10px;
     box-sizing: border-box;
+}
+
+.headerHome {
+    margin-left: 30px; /* Ajouter un espace à gauche */
+    font-size: 1.5em; /* Agrandir le texte */
+    padding: 10px 20px; /* Ajouter du padding pour une grosse case */
+    border-radius: 5px; /* Arrondir les coins */
+    text-decoration: none; /* Enlever la décoration de texte */
+    color: #ffffff; /* Couleur du texte */
+    display: flex;
+    gap: 10px; /* Espacer les liens */
+}
+
+.category{
+    color: white;
+    display : flex;
+    justify-content: flex-start; /* Aligner à gauche */
+    margin-left : 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.mainContainer {
+    display: flex;
+    justify-content: flex-start; /* Aligner les éléments à gauche */
+    flex-direction: column; /* Disposer les éléments en colonne */
+    width: 100%; /* Prendre toute la largeur */
+    padding-left: 20px; /* Ajouter un padding à gauche */
 }
